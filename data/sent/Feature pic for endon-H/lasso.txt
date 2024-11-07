@@ -1,0 +1,16 @@
+electronegativity                  0.0
+Magnetic_moment                    0.0
+radius_of_d-orbitals(A)            0.0
+n_d                               -0.0
+d-band(pure)                      -0.0
+Bandgap                           -0.0
+VBM                                0.0
+CBM                                0.0
+Vacuum_level                      -0.0
+E_affinity                         0.0
+Ion_Ener                           0.0
+iCOHP_(*N2)                       -0.0
+iCOHP-spin_up_(N*)                -0.0
+iCOHP-spin_down_(N*)              -0.0
+coupling_matrix_element_squared    0.0
+Ef                                 0.0

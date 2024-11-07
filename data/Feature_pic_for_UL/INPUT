@@ -1,0 +1,18 @@
+################# Feature Selection ##############################
+job_select_feature = T
+plot_pair = F
+plot_comat = F
+use_back_elim = F
+use_recu_elim = F
+use_lasso = T
+use_randomforest = T
+use_permutation = T
+use_shap = T
+
+############# Input and Output parameters ########################
+
+input_names =  n_d	electronegativity	Magnetic_moment	radius_of_d-orbitals(A)	d-band(pure)	Bandgap	VBM	CBM	Vacuum_level	E_affinity	Ion_Ener	Ef	Distance_N-N	iCOHP_(*N2)	iCOHP_(N*)	coupling_matrix_element_squared	
+
+output_names = UL
+
+pos_type = type

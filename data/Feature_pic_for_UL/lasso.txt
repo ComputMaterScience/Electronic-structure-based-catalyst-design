@@ -1,0 +1,16 @@
+iCOHP_(*N2)                       -0.705939
+Vacuum_level                      -0.613977
+CBM                               -0.447540
+E_affinity                        -0.107731
+iCOHP_(N*)                        -0.081894
+Bandgap                           -0.080534
+Ion_Ener                          -0.077466
+coupling_matrix_element_squared   -0.059479
+electronegativity                 -0.000000
+Distance_N-N                       0.000000
+Magnetic_moment                    0.008043
+n_d                                0.010910
+VBM                                0.047566
+d-band(pure)                       0.091879
+Ef                                 0.172353
+radius_of_d-orbitals(A)            1.194570
