@@ -1,0 +1,22 @@
+################# Feature Selection ##############################
+job_select_feature = T
+plot_pair = F
+plot_comat = F
+use_back_elim = F
+use_recu_elim = F
+use_lasso = T
+use_randomforest = T
+use_permutation = T
+use_shap = T
+
+#############      Fitting Functions     ########################
+job_fit_normal_linear = F
+
+
+############# Input and Output parameters ########################
+
+input_names =  N2*-endon	NNH*	NHNH*	NHNH2*	NH2NH2*	NH2*	NH3*	
+
+output_names = Alternating	
+
+data_type = TM-ads TM-S
