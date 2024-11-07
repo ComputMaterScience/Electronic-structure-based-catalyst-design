@@ -1,0 +1,36 @@
+################### NN parameters ################################
+num_core = 1
+num_nn = 30,10
+num_hidden_layer = 2
+act_func = tanh,relu
+loss_func = mse
+ratio_train = 0.8
+num_run = 1
+num_epochs = 1000
+learn_rate = 0.001
+decay_rate = 0.80
+decay_step = 100
+
+################## Job parameters ################################
+job_makeinput = T
+job_train = T
+job_predict = F
+use_gpu = F
+restart = F
+
+################# Feature Selection ##############################
+job_select_feature = F
+plot_pair = F
+plot_comat = T
+use_back_elim = F
+use_recu_elim = F
+use_lasso = F
+use_randomforest = F
+use_permutation = F
+use_shap = T
+
+############# Input and Output parameters ########################
+
+input_names =  atom_num_X atom_num_Y atom_num_Z d_val_X d_val_Y d_val_Z num_valence
+
+output_names = tot_mag
