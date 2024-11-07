@@ -1,0 +1,22 @@
+################# Feature Selection ##############################
+job_select_feature = T
+plot_pair = T
+plot_comat = T
+use_back_elim = F
+use_recu_elim = F
+use_lasso = F
+use_randomforest = F
+use_permutation = F
+use_shap = F
+
+#############      Fitting Functions     ########################
+job_fit_normal_linear = F
+job_subgroup = F
+
+############# Input and Output parameters ########################
+
+input_names =  Q(*)	Q(*N)	Q(*NH)
+
+output_names = Q(*NH2)
+
+data_type = TM-ads TM-S
