@@ -1,0 +1,59 @@
+HƯỚNG DẪN SỬ DỤNG CODE PHÂN TÍCH DỮ LIỆU XÚC TÁC ĐIỆN HÓA
+1. Giới thiệu chung
+Phần mềm này gồm 02 module chính:
+•	ML_Fit_Regression: Dùng để xây dựng mô hình hồi quy trên tập dữ liệu đặc tính vật liệu – hoạt tính xúc tác.
+•	ML_trainNN: Dùng để huấn luyện mạng nơ-ron (neural network) trên dữ liệu sau xử lý từ MATLAB/Python.
+Mã nguồn được viết bằng Python và MATLAB, phục vụ phân tích mối tương quan giữa đặc tính cấu trúc và hiệu suất điện hóa của vật liệu xúc tác.
+2. Cấu trúc thư mục và chức năng
+├── data/                         # Dữ liệu đầu vào (.csv hoặc .txt)
+├── ML_Fit_Regression/           # Module hồi quy bằng Python
+│   ├── ML_Fit_Regression.py     # Code chính xây mô hình hồi quy (scikit-learn, xgboost)
+│   ├── *.pyproj / *.sln         # Tệp cấu hình Visual Studio (nếu dùng IDE)
+├── ML_trainNN/                  # Huấn luyện mạng nơ-ron
+│   ├── new/
+│   ├── data/                    # Dữ liệu phục vụ huấn luyện NN
+│   ├── matlib/
+│   │   └── print_header.m       # Hàm phụ trợ xuất tiêu đề trong MATLAB
+│   ├── pydir/
+│   │   ├── extract_min_data.py     # Tách dữ liệu đầu vào
+│   │   ├── join_data.py             # Ghép nhiều nguồn dữ liệu
+│   │   └── prepare_data.py         # Tiền xử lý dữ liệu
+│   ├── workdir/
+│   │   └── mNNtrain.m              # Huấn luyện mạng nơ-ron bằng MATLAB
+│   ├── ML_trainNN.py              # Giao diện tổng hợp bằng Python
+│   ├── *.pyproj / *.sln           # Tệp dự án nếu mở bằng Visual Studio
+├── README.md                     # Mô tả tổng quát chương trình
+
+3. Cách cài đặt và sử dụng
+3.1 Yêu cầu hệ thống
+•	Python ≥ 3.8
+•	MATLAB (để chạy các file .m)
+•	Cài đặt các thư viện: 
+pip install numpy pandas matplotlib scikit-learn xgboost
+4. Hướng dẫn sử dụng
+4.1 Module ML_Fit_Regression
+•	Mục tiêu: Xây dựng mô hình hồi quy với thuật toán như Linear Regression, XGBoost.
+•	Chạy bằng lệnh:
+python ML_Fit_Regression.py
+-  Dữ liệu đầu vào: File .csv chứa đặc trưng (descriptor) và giá trị mục tiêu (target).
+-  Kết quả:
+•	File mô hình đã huấn luyện
+•	Biểu đồ dự đoán vs thực tế
+•	Chỉ số R², RMSE, MAE...
+4.2 Module ML_trainNN
+•	Mục tiêu: Huấn luyện mạng nơ-ron bằng cách kết hợp MATLAB (xử lý dữ liệu, huấn luyện) và Python (giao diện).
+•	Các bước:
+1.	Chạy prepare_data.py trong thư mục pydir/ để chuẩn bị dữ liệu:
+python pydir/prepare_data.py
+2.	Chạy mNNtrain.m trong MATLAB để huấn luyện mạng nơ-ron:
+cd('workdir')
+mNNtrain
+3.	(Tuỳ chọn) Dùng ML_trainNN.py để thực thi toàn bộ quy trình.
+5. Đầu vào và đầu ra
+•	Đầu vào: Các file dữ liệu .csv hoặc .txt chứa đặc trưng vật liệu (band gap, adsorption energy, DOS, ...).
+•	Đầu ra:
+o	Mô hình học máy đã huấn luyện
+o	File dự đoán
+o	Biểu đồ trực quan
+o	Các chỉ số đánh giá mô hình
+
