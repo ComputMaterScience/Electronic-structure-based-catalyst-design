@@ -1,0 +1,101 @@
+Phân tích DOS trong VASP
+
+Công cụ này sẽ:
+
+* Đọc `vasprun.xml`, căn năng lượng về $E_F=0$, vẽ Total DOS, PDOS theo nguyên tố (tách s/p/d), và (tuỳ chọn) PDOS theo site chỉ định.
+* Xuất toàn bộ đường cong ra CSV và lưu hình PNG DPI cao (mặc định 600).
+* Không yêu cầu seaborn; chỉ dùng matplotlib tiêu chuẩn.
+
+Cách dùng nhanh
+
+1. Cài thư viện:
+
+bash
+pip install pymatgen numpy pandas matplotlib
+
+
+2. Chạy trong thư mục chứa `vasprun.xml` (hoặc truyền đường dẫn đầy đủ):
+
+bash
+# Vẽ Total DOS + PDOS theo nguyên tố (tất cả các nguyên tố)
+python vasp_dos_tools.py vasprun.xml
+
+# Giới hạn cửa sổ năng lượng, làm mượt Gaussian và chỉ vẽ cho C, O
+python vasp_dos_tools.py vasprun.xml --emin -6 --emax 6 --sigma 0.10 --elements C O
+
+# Vẽ thêm PDOS theo site (ví dụ các site 0, 5, 12) và xuất ra thư mục riêng
+python vasp_dos_tools.py vasprun.xml --sites 0 5 12 --outdir dos_output
+
+# Vẽ tách riêng spin-up/spin-down (thay vì spin-summed)
+python vasp_dos_tools.py vasprun.xml --no-spinsum
+
+Script sử dụng `pymatgen.io.vasp.Vasprun` để dựng `CompleteDos` từ `vasprun.xml`, sau đó dùng các tiện ích như `get_element_spd_dos()` và `get_site_spd_dos()` để gom theo s/p/d và theo site. ([pymatgen][1])
+
+Gợi ý thiết lập VASP để có PDOS đầy đủ
+
+* Để có PDOS (phân giải theo nguyên tử/quỹ đạo) trong `vasprun.xml`, hãy đặt `LORBIT = 10` hoặc `11` trong INCAR; VASP sẽ ghi PDOS phân giải l hoặc lm vào DOSCAR và `vasprun.xml`. Chọn `NEDOS` đủ mịn (ví dụ 300–4000) và bật spin nếu hệ có từ tính. ([vaspkit.com][2])
+* Nếu cần workflow dựng input DOS/BS “kiểu Materials Project”, bạn có thể tham khảo `MPNonSCFSet` và các notebook minh hoạ. ([matgenb][3])
+
+Một vài lựa chọn/tiện ích khác 
+
+* **sumo-dosplot**: tạo hình DOS “publication-ready”, có chọn/ẩn nguyên tố, orbitals, atoms rất tiện (dựa trên pymatgen). ([smtg-bham.github.io][4])
+* **vasprun-xml**: gói nhẹ chuyên đọc/phân tích nhanh từ `vasprun.xml` (band gap, DOS, v.v.). ([vasprun-xml.readthedocs.io][5])
+
+///---------------------------------------------
+
+Đối với phân tích Band structure:
+
+1. Cài thư viện:
+
+```bash
+pip install pymatgen numpy pandas matplotlib
+```
+
+2. Chạy trong thư mục chứa `vasprun.xml` (và `KPOINTS` dạng line-mode):
+
+```bash
+# Vẽ band structure cơ bản, căn E_F = 0
+python vasp_band_tools.py vasprun.xml
+
+# Giới hạn cửa sổ năng lượng và độ phân giải hình
+python vasp_band_tools.py vasprun.xml --emin -6 --emax 6 --dpi 600
+
+# Vẽ band projected theo nguyên tố (cần LORBIT=10/11 để có projections)
+python vasp_band_tools.py vasprun.xml --project elements --elements C O
+
+# Vẽ band projected theo quỹ đạo
+python vasp_band_tools.py vasprun.xml --project orbitals --orbitals s p d
+
+# Xuất hình .svg bên cạnh .png
+python vasp_band_tools.py vasprun.xml --svg
+```
+
+Script sẽ:
+
+* Đọc bands bằng `BSVasprun`/`Vasprun`, căn mức $E_F = 0$.
+* Xuất hình `band_plain.png` (và `band_projected_*.png` nếu bạn bật `--project`).
+* Xuất CSV phẳng `bands.csv` với các cột: segment, k\_index, k\_distance, band\_index, spin, energy\_eV — tiện để bạn tự xử lý hay vẽ lại trong matplotlib/Origin.
+* In tóm tắt band gap (giá trị, trực tiếp/gián tiếp).
+
+## Lưu ý quan trọng khi dựng tính toán band
+
+* **KPOINTS phải là line-mode** (dọc theo đường đối xứng). Pymatgen đọc và vẽ tốt với dữ liệu line-mode, qua `get_band_structure(..., line_mode=True)`. ([pymatgen][1])
+* Để **band projected** (theo nguyên tố/quỹ đạo) hoạt động, cần bật **LORBIT=10/11** trong INCAR để VASP ghi thông tin chiếu orbital (PROCAR/vasprun). ([VASP][2])
+* Nếu bạn muốn tạo đường k-path chuẩn từ cấu trúc, có thể dùng **HighSymmKpath** của pymatgen để sinh KPOINTS, hoặc dùng tiện ích **sumo-kgen**. ([pymatgen][3], [Smtg Bham][4])
+* Nếu thích công cụ CLI dựng hình “publication-ready” ngay, **sumo-bandplot** (xây trên pymatgen) là lựa chọn nhanh. ([Smtg Bham][4])
+
+## Tham khảo mình đã tra cứu
+
+* Tài liệu `Vasprun.get_band_structure` và plotter của pymatgen (BS/BSProjected). ([pymatgen][1])
+* Trang VASP về **LORBIT** cho dữ liệu chiếu orbital. ([VASP][2])
+* Bộ công cụ **sumo** (bandplot/dosplot). ([Smtg Bham][4])
+* Sinh k-path chuẩn bằng **HighSymmKpath**. ([pymatgen][3])
+
+Nếu bạn muốn, mình có thể mở rộng script để:
+
+* Vẽ **band + DOS chung một hình** (kiểu BSDOSPlotter),
+* Tô **độ dày/opacity** theo trọng số chiếu (element/orbital),
+* Gắn nhãn đường đối xứng theo quy ước khác (Seekpath, Hinuma),
+* Hoặc xuất dữ liệu theo đúng format bạn đang dùng (MATLAB, R, …).
+
+
