@@ -1,1 +1,92 @@
-# TMD.datamining
+Electronic structure–based catalyst design
+
+USER GUIDE — ELECTROCATALYSIS DATA ANALYSIS CODE
+
+1. General introduction
+
+This software contains two main modules:
+
+• ML_Fit_Regression: used to build regression models on datasets linking material descriptors to catalytic activity.
+
+• ML_trainNN: used to train neural networks on post-processed data exported from MATLAB/Python.
+
+The source code is written in Python and MATLAB to analyze correlations between structural/material properties and electrochemical performance of catalysts.
+
+2. Directory structure and functions
+
+├── data/                         # Input data (.csv or .txt)
+
+├── ML_Fit_Regression/            # Python-based regression module
+│   ├── ML_Fit_Regression.py      # Main script to build regression models (scikit-learn, xgboost)
+│   ├── *.pyproj / *.sln          # Visual Studio project files (if using that IDE)
+
+├── ML_trainNN/                   # Neural-network training
+│   ├── new/
+│   ├── data/                     # Data for NN training
+│   ├── matlib/
+│   │   └── print_header.m        # Helper function to print headers in MATLAB
+│   ├── pydir/
+│   │   ├── extract_min_data.py   # Extract input data
+│   │   ├── join_data.py          # Merge multiple data sources
+│   │   └── prepare_data.py       # Data preprocessing
+│   ├── workdir/
+│   │   └── mNNtrain.m            # Train neural networks in MATLAB
+│   ├── ML_trainNN.py             # Python wrapper/launcher
+│   ├── *.pyproj / *.sln          # Project files if opened with Visual Studio
+
+├── README.md                     # High-level program description
+
+
+3. Installation and usage
+
+3.1 System requirements
+
+• Python ≥ 3.8
+• MATLAB (to run the .m files)
+• Required Python packages:
+pip install numpy pandas matplotlib scikit-learn xgboost
+
+4. How to use
+
+4.1 Module: ML_Fit_Regression
+
+Objective: Build regression models using algorithms such as Linear Regression and XGBoost.
+
+Run:
+python ML_Fit_Regression.py
+
+Input: A .csv file containing descriptors/features and the target values.
+
+Outputs:
+
+Trained model file
+
+Predicted vs. actual plot
+
+Evaluation metrics (R², RMSE, MAE, …)
+
+4.2 Module: ML_trainNN
+
+Objective: Train neural networks by combining MATLAB (data handling, training) and Python (wrapper/interface).
+
+Steps:
+
+Run prepare_data.py in the pydir/ folder to prepare data:
+python pydir/prepare_data.py
+
+Run mNNtrain.m in MATLAB to train the neural network:
+cd('workdir')
+mNNtrain
+
+(Optional) Use ML_trainNN.py to orchestrate the whole workflow.
+
+
+5. Inputs and outputs
+
+Inputs: .csv or .txt data files containing material descriptors (e.g., band gap, adsorption energy, DOS, …).
+
+Outputs:
+• Trained machine learning models
+• Prediction files
+• Visualization plots
+• Model evaluation metrics
